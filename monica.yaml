@@ -1,0 +1,46 @@
+version: "3.4"
+services:
+  # https://hub.docker.com/_/monica
+  app:
+    image: monica:apache
+    container_name: monica
+    depends_on:
+      - db
+    ports:
+      - 80:80
+    environment:
+      - DB_HOST=db
+      - DB_USERNAME=[username]
+      - DB_PASSWORD=[password]
+      # https://kinsta.com/blog/gmail-smtp-server/
+      - MAIL_MAILER=smtp
+      - MAIL_HOST=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USERNAME=[gmail address]
+      - MAIL_PASSWORD=[gmail password]
+      - MAIL_ENCRYPTION=tls
+      - MAIL_FROM_ADDRESS=[gmail address] 
+      - MAIL_FROM_NAME=[from name]
+    volumes:
+      - /path/to/local/dir:/var/www/html/storage
+    restart: unless-stopped
+  db:
+    image: mysql:5.7
+    container_name: monica_db
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=monica
+      - MYSQL_USER=[username[
+      - MYSQL_PASSWORD=[password]
+    volumes:
+      - /path/to/local/dir:/var/lib/mysql
+    restart: unless-stopped
+  cron:
+    image: monica
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - /path/to/local/dir:/var/www/html/storage
+    command: cron.sh
+    depends_on:
+      - db
