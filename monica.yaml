@@ -17,7 +17,7 @@ services:
       - MAIL_HOST=smtp.gmail.com
       - MAIL_PORT=587
       - MAIL_USERNAME=[gmail address]
-      - MAIL_PASSWORD=[gmail password]
+      - MAIL_PASSWORD=[gmail password] # Note - if your gmail account uses 2FA you need to use an App Password - https://support.google.com/mail/answer/185833?hl=
       - MAIL_ENCRYPTION=tls
       - MAIL_FROM_ADDRESS=[gmail address] 
       - MAIL_FROM_NAME=[from name]
